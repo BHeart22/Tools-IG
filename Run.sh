@@ -93,7 +93,7 @@ case $opt in
         echo -e "${white}options are not on the menu"
         sleep 1
         clear
-        bash brute.sh
+        bash Run.sh
 esac
 
 # start_brute
