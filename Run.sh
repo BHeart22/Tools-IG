@@ -1,4 +1,5 @@
-# !/bin/bash
+# !/bin/bash# !/bin/bash
+
 # color(bold)
 red='\e[1;31m'
 green='\e[1;32m'
@@ -34,10 +35,16 @@ done
 
 # menu
 echo -e '''
-1]. Dapatkan target dari \e[1;31m@username\e[1;37m
-2]. Dapatkan target dari \e[1;31m#hashtag\e[1;37m
-3]. Crack dari wordlist
+╔══╗╔═══════════════════╗
+║1.║║ Dapatkan target dari ║/e[1;31m@username\e[1;37m
+╚══╝╚═══════════════════╝
 
+╔══╗╔═══════════════════╗
+║2.║║Dpatkan target dari   ║/e[1;31m#hashtag\e[1;37m
+╚══╝╚═══════════════════╝
+╔══╗╔═══════════════════╗
+║3.║║Crack dari wordlist   ║
+╚══╝╚═══════════════════╝
 '''
 
 read -p $'Pilihan     : \e[1;31m' opt
